@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+
+    <style>
+
+    body {
+        font-family: sans-serif;
+    }
+
+    #effect1 {
+        display: inline-block;
+    }
+
+    #effect2 {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    #effect3 {
+        float: right;
+        padding: 20px;
+
+    }
+
+
+    </style>
+</head>
+
+<body>
+
+    <div class="error">
+        {% if messages %}
+           <ul class="messages">
+              {% for message in messages %}
+                 <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              {% endfor %}
+           </ul>
+        {% endif %}
+    </div>
+    <div id="effect1" style="display: inline-block">
+    <form action="/register" method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h1>REGISTER</h1></legend>
+            Name:<br>
+            <input type="text" name="name" required><br>
+            Alias:<br>
+            <input type="text" name="alias" required><br>
+            Email:<br>
+            <input type="text" name="email" required><br>
+            Password:<br>
+            <input type="password" name="password" required><br>
+            Password Confirm:<br>
+            <input type="password" name="password_c" required><br>
+
+            <input type="submit" name='register 'value="register">
+        </fieldset>
+    </form>
+    </div>
+    <div id="effect2">
+        <form action="/login" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend><h1>LOGIN</h1></legend>
+                Email:<br>
+                <input type="text" name="email" required><br>
+                Password:<br>
+                <input type="text" name="password" required><br>
+                <input type="submit" name='login 'value="login">
+            </fieldset>
+    </form>
+    </div>
+
+    <div id="effect3">
+        <form action="/logout" method="post">
+        <input type="hidden" name="logout">
+            <input type="submit" name='logout 'value="logout">
+        </form>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+
+        <style media="screen">
+            body {
+                padding: 50px;
+            }
+
+            #left {
+                display: inline-block;
+                border: 1px solid black;
+                border-radius: 5px;
+                width: 600px;
+                padding: 20px;
+            }
+
+            #title {
+                display: inline-block;
+                margin-bottom: 0
+            }
+
+            #author {
+                display: inline-block;
+            }
+
+            #head {
+                display: block;
+                margin-bottom: 20px
+            }
+
+            #date {
+                font-size: .7em;
+            }
+
+            #button {
+                border: none;
+                color: blue;
+                cursor: pointer;
+                background-color: transparent;
+            }
+
+            #right {
+                display: inline-block;
+                float: right;
+            }
+
+            #textarea{
+                display: block;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="head">
+        <a href="{% url 'books' %}">Home</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        </div>
+        {% if messages %}
+           <ul class="messages">
+              {% for message in messages %}
+                 <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              {% endfor %}
+           </ul>
+        {% endif %}
+    <div id="left">
+        <H2 id='title'>{{show_books.title}}</H2>
+        <br>
+        <H3 id="author">Author: </H3>
+        {{show_books.author}}
+        <hr>
+        <h2 id="review">Reviews: </h2>
+        <p>-----------------------------------</p>
+    {%for review in show_reviews%}
+        <form action="{% url 'show_user' id=review.user.id%}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{review.user.id}}">
+                <h3 id="rating">Rating: {{review.rating}} stars.</h3>
+            <input id="button" type="Submit" name="submit" value="{{review.user.alias}}"> says: {{review.review}}
+                <p id="date">Posted on: {{review.created_at}}</p>
+        </form>
+        <form class="" action="{% url 'delete' id=review.id%}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{review.user_id}}">
+            <input type="hidden" name="review_id" value="{{review.id}}">
+            <input type="hidden" name="book_id" value="{{show_books.id}}">
+
+            <input type="submit" name="delete" value="Delete this review">
+        </form>
+        <p>-----------------------------------</p>
+    {%endfor%}
+    </div>
+    <div id="right">
+        <div id="add">
+            <h2>Add a review:</h2>
+            <form class="" action="{% url 'add_new_review' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="book_id" value="{{show_books.id}}">
+
+                <textarea id="textarea" name="review" rows="8" cols="40"></textarea>
+                <label for="rating">Rating:</label>
+                <select class="" name="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <input type="hidden" name="user_id" value="{{request.session.id}}">
+                <input type="submit" name="submit" value="Submit">
+            </form>
+
+        </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Add</title>
+    </head>
+    <body>
+
+        <hr>
+            <h2>Dev Data</h2>
+            {%for book in books%}
+                {{book.author}}
+            {%endfor%}
+
+        <hr>
+
+        <a href="{% url 'books' %}">Home</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <h1>Add a new book title and review</h1>
+
+        {% if messages %}
+           <ul class="messages">
+              {% for message in messages %}
+                 <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              {% endfor %}
+           </ul>
+        {% endif %}
+
+        <form action="{% url 'create' %}" method="POST">
+            {% csrf_token %}
+            <label for="">Book Title:</label>
+            <select class="" name="title">
+                <option value="">Select Title</option>
+                {%for book in books%}
+                    <option value="{{book.title}}">{{book.title}}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="new_title" value = "" placeholder="or add a new title">
+            <br>
+            <br>
+            <label for="">Author:</label>
+                <select class="" name="author">
+                    <option value="">Select Author</option>
+                    {%for book in books%}
+                    <option value="{{book.author}}">{{book.author}}</option>
+                    {%endfor%}
+                </select>
+                <input type="text" name="new_author" value="" placeholder="or, add a new author">
+            <br>
+            <br>
+            <label for="">Review:</label>
+            <br>
+            <textarea name="review" rows="8" cols="45"></textarea>
+            <br>
+            <br>
+            <label for="">Rating:</label>
+            <select class="" name="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            stars.
+            <br>
+            <br>
+            <br>
+            <input type="Submit" name="submit" value="Add Book and Review">
+        </form>
+    </body>
+</html>

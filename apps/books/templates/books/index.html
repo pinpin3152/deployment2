@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Books</title>
+    </head>
+
+    <style media="screen">
+        body {
+            padding: 50px;
+        }
+
+        #box {
+            position: absolute;
+            top: 200px;
+            right: 220px;
+            height:120px;
+            width:420px;
+            border:1px solid #ccc;
+            overflow:auto;
+            display:inline-block
+        }
+    </style>
+    <body>
+
+
+        <a href="{% url 'add' %}">Add a Review</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <h1>Welcome, {{request.session.user}}!</h1>
+        <hr>
+        <h3>Recent Book Reviews: </h3>
+
+        <div id="left" style="display: inline-block">
+            {% for item in index_item|slice:":3" %}
+            <p>-------------------------------------------------------</p>
+            <h4><a href="{% url 'show' id=item.book.id %}">{{item.book.title}}</a></h4>
+            <h5>Star Rating: {{item.rating}}</h5>
+
+            <form style="display: inline-block" action="{% url 'show_user' id=item.user.id%}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{item.user.id}}">
+                <input id="button" type="Submit" name="submit" value="{{item.user.alias}}">
+            </form>
+
+            <p style="display: inline-block">{{item.review}}</p>
+            <p>{{item.created_at}}</p>
+            {%endfor%}
+        </div>
+
+        <div id="right" style="display: inline-block">
+
+                <div id="box">
+                    {%for item in index_item%}
+                    <a href="{% url 'show' id=item.book.id%}">{{item.book.title}}</a><br>
+                    {%endfor%}
+                </div>
+        </div>
+
+    </body>
+</html>
